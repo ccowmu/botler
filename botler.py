@@ -48,7 +48,29 @@ while 1:
     # TODO: parse message properly
     if data.find('PING') != -1:
         send('PONG {}'.format(data.split()[1])) 
-    if data.find('hello') != -1:
-        say('#hackathon', 'Hello! May I invite you to bite my shiny virtual ass?')
+    if data.find('PRIVMSG') != -1:
+        parts = data.split(sep=' ', maxsplit=4)
+        if len(parts) == 4:
+            # Raw parts of the original message
+            real_source = parts[0]
+            real_target = parts[2]
+            real_message = parts[3]
+
+            # Final parameter (message) is often prefixed with ':'
+            if real_message.startswith(':'):
+                message = real_message[1:]
+            else:
+                message = real_message
+
+            # If a user PRIVMSG's us we appear as the target
+            if real_target == NICK:
+                channel = real_source
+            else:
+                channel = real_target
+
+            # Echo
+            say(channel, message)
+        else:
+            log.warn('Invalid PRIVMSG detected with {} != 4 parts'.format(len(parts)))
 
 # vim: ts=4:sw=4:et

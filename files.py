@@ -24,7 +24,6 @@ class DataFile:
             lines = string.split(line_delimiter)
             for line in lines:
                 values = line.split(column_delimiter)
-                print(values)
                 self.data.append(values)
 
     # Write all current data to the file.

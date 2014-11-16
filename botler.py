@@ -40,7 +40,7 @@ send('NICK {}'.format(NICK))
 send('USER {} {} bla :{}'.format(IDENT, HOST, REALNAME))
 for channel in START_CHANNELS:
     send('JOIN {}'.format(channel))
-    send("PRIVMSG {} :Botler is Now Online and Running...".format(channel))
+    send("PRIVMSG {} :botler is now online and running...".format(channel))
 log.info('Connected')
 
 while 1:
@@ -49,6 +49,6 @@ while 1:
     if data.find('PING') != -1:
         send('PONG {}'.format(data.split()[1])) 
     if data.find('hello') != -1:
-        say('#geekboy', 'Hello! May I invite you to bite my shiny virtual ass?')
+        say('#hackathon', 'Hello! May I invite you to bite my shiny virtual ass?')
 
 # vim: ts=4:sw=4:et

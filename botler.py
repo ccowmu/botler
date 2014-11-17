@@ -64,7 +64,7 @@ def reload_commands():
     for source in glob.glob('commands/*.py'):
         exec(compile(open(source).read(), source, 'exec'), command_globals)
 def clean_vote_kicking():
-  for key in active_votes:
+  for key in active_votes.keys():
     if active_votes[key].start - time.clock() > 300:
       active_votes[key].failure()
 s = socket.socket()

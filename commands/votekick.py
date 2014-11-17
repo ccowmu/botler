@@ -12,10 +12,10 @@ def votekick(channel, nick, message):
       #TODO: add logic to determine if current voter has voted
       # if they have send back a message telling them they can
       # only vote on a person once per vote
-      if self.votes == 1:
+      if self.votes == 1 and nick != self.first_voter:
         self.second_voter = nick
         self.votes++
-      elif self.votes == 2:
+      elif self.votes == 2 and nick != self.second_voter and nick != self.first_voter:
         self.third_voter = nick
         self.votes++
       if self.votes==3:

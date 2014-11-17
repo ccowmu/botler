@@ -64,7 +64,7 @@ def reload_commands():
     for source in glob.glob('commands/*.py'):
         exec(compile(open(source).read(), source, 'exec'), command_globals)
 def clean_vote_kicking():
-  # TODO: add code here to load vote objects and check thier timers
+  
 s = socket.socket()
 log.info('Connecting to {}:{} as {}'.format(HOST, PORT, NICK))
 

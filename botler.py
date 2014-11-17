@@ -66,7 +66,7 @@ def reload_commands():
 def clean_vote_kicking():
   for key in active_votes:
     if active_votes[key].start - time.clock() > 300:
-      active_votes[key].failure
+      active_votes[key].failure()
 s = socket.socket()
 log.info('Connecting to {}:{} as {}'.format(HOST, PORT, NICK))
 

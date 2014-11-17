@@ -118,7 +118,7 @@ while 1:
                 # Invoke associated command or error
                 if command_ in commands:
                     commands[command_]['method'](nick, channel, message)
-                elif command == 'reload':
+                elif command_ == 'reload':
                     reload_commands()
                 else:
                     say(channel, 'unknown command "{}"'.format(command_))

@@ -5,6 +5,7 @@
 import socket
 import logging
 import sys
+import glob
 
 HOST = 'localhost'
 PORT = 6667
@@ -18,7 +19,7 @@ log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler(sys.stderr))
 log.setLevel(logging.DEBUG)
 
-commands = {}
+commands = dict()
 
 def command(name, **options):
     '''Decorator for command functions.
@@ -50,6 +51,18 @@ def recv():
 def say(channel, message):
     send('PRIVMSG {} :{}'.format(channel, message))
 
+def reload_commands():
+    '''Reload all source files in commands directory.'''
+    global commands
+    commands = dict()
+    # Globals dict for the command source.
+    command_globals = dict(
+        command=command,
+        say=say,
+    )
+    for source in glob.glob('commands/*.py'):
+        exec(compile(open(source).read(), source, 'exec'), command_globals)
+
 s = socket.socket()
 log.info('Connecting to {}:{} as {}'.format(HOST, PORT, NICK))
 
@@ -61,9 +74,7 @@ for channel in START_CHANNELS:
     send("PRIVMSG {} :botler is now online and running...".format(channel))
 log.info('Connected')
 
-@command("echo")
-def echo(nick, channel, message):
-    say(channel, '{}: {}'.format(nick, message))
+reload_commands()
 
 while 1:
     data = recv()
@@ -98,17 +109,19 @@ while 1:
             # Check if we need to care about this message
             if message.startswith(LEADER):
                 parts = message.split(maxsplit=1)
-                command = parts[0][len(LEADER):]
+                command_ = parts[0][len(LEADER):]
                 # Give a default value for message if none is provided.
                 if len(parts) == 2:
                     message = parts[1]
                 else:
                     message = ""
                 # Invoke associated command or error
-                if command in commands:
-                    commands[command]['method'](nick, channel, message)
+                if command_ in commands:
+                    commands[command_]['method'](nick, channel, message)
+                elif command == 'reload':
+                    reload_commands()
                 else:
-                    say(channel, 'unknown command "{}"'.format(command))
+                    say(channel, 'unknown command "{}"'.format(command_))
 
         else:
             log.warn('Invalid PRIVMSG detected with {} != 4 parts'.format(len(parts)))

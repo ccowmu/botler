@@ -96,7 +96,7 @@ while 1:
 
             # If a user PRIVMSG's us we appear as the target
             if real_target == NICK:
-                channel = real_source
+                channel = nick
             else:
                 channel = real_target
 

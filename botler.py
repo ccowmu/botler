@@ -6,6 +6,7 @@ import socket
 import logging
 import sys
 import glob
+import time
 
 HOST = 'localhost'
 PORT = 6667
@@ -50,6 +51,15 @@ def recv():
 
 def say(channel, message):
     send('PRIVMSG {} :{}'.format(channel, message))
+
+def isadmin(username):
+    print('Checking to see if {} is an admin...'.format(username))
+    adminlistfile = open('adminlist','r')
+    for line in adminlistfile:
+        currentname = line.rstrip('\n')
+        if username == currentname:
+            return True
+    return False
 
 def reload_commands():
     '''Reload all source files in commands directory.'''
@@ -117,7 +127,13 @@ while 1:
                     message = ""
                 # Invoke associated command or error
                 if command_ in commands:
-                    commands[command_]['method'](nick, channel, message)
+                    if commands[command_]['admin_only']:
+                        if isadmin(nick):
+                            command[command_]['method'](nick, channel, message)
+                        else:
+                            say(channel, '{}: You are Not an Admin!!!'.format(nick))                        
+                    else:
+                        commands[command_]['method'](nick, channel, message)
                 elif command == 'reload':
                     reload_commands()
                 else:

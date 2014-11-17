@@ -6,6 +6,7 @@ import socket
 import logging
 import sys
 import glob
+import time
 
 HOST = 'localhost'
 PORT = 6667
@@ -62,7 +63,8 @@ def reload_commands():
     )
     for source in glob.glob('commands/*.py'):
         exec(compile(open(source).read(), source, 'exec'), command_globals)
-
+def clean_vote_kicking():
+  # TODO: add code here to load vote objects and check thier timers
 s = socket.socket()
 log.info('Connecting to {}:{} as {}'.format(HOST, PORT, NICK))
 
@@ -78,9 +80,10 @@ reload_commands()
 
 while 1:
     data = recv()
+    clean_vote_kicking()
     # TODO: parse message properly
     if data.find('PING') != -1:
-        send('PONG {}'.format(data.split()[1])) 
+        send('PONG {}'.format(data.split()[1]))
     if data.find('PRIVMSG') != -1:
         parts = data.split(sep=' ', maxsplit=3)
         if len(parts) == 4:

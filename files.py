@@ -21,21 +21,41 @@ class DataFile:
                     # Add the line to the raw string.
                     string += line
             # Slice up the string and put it into this object's data field.
-            lines = string.split(line_delimiter)
+            lines = tokenize(string, line_delimiter)
             for line in lines:
-                values = line.split(column_delimiter)
+                values = tokenize(line, column_delimiter)
                 self.data.append(values)
 
     # Write all current data to the file.
-    def write():
+    def write(self):
         string = ""
         for i in range(0, len(self.data)):
             for j in range(0, len(self.data[i])):
                 string += self.data[i][j]
                 if j < len(self.data[i]) - 1:
                     string += self.column_delimiter
-            if i < len(self.data[i]) - 1:
+            if i < len(self.data) - 1:
                 string += self.line_delimiter
-
-        with open(self.filename) as f:
+        with open(self.filename, 'w') as f:
             f.write(string)
+
+# Split a string by a character, but ignore it if it is preceded by the escape character.
+def tokenize(string, delimiter = ',', escape = '\\'):
+    array = []
+    buf = ""
+    escaping = False
+    for c in string:
+        if c == delimiter:
+            if not escaping:
+                array.append(buf)
+                buf = ""
+            else:
+                escaping = False
+        elif c == escape:
+            escaping = True
+        else:
+            buf += c
+            escaping = False
+    if len(buf) > 0:
+        array.append(buf)
+    return array

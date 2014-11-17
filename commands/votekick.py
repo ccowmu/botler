@@ -23,11 +23,11 @@ def votekick(channel, nick, message):
         say(self.kick_from, '{}&{}&{}: {}:{}'.format(self.first_voter, self.second_voter, self.third_voter, "Have kicked", self.judged))
         del(self)
     def failure(message):
-      say(channel, 'Kick vote against {} has failed.'.format(self.judged))  
+      say(channel, 'Kick vote against {} has failed.'.format(self.judged))
   if message != valid_user:# <- not real code just filler
     say(channel, '{}: {}'.format(nick, "Sorry thats kickable target"))
   elif message in votes:
     #add a vote
-    active_votes[message].voted()
+    active_votes[message].voted(nick)
   else:
     active_votes[message] = vote(nick, message, channel)

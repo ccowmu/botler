@@ -19,8 +19,6 @@ log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler(sys.stderr))
 log.setLevel(logging.DEBUG)
 
-commands = dict()
-
 def command(name, **options):
     '''Decorator for command functions.
 

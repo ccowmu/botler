@@ -6,7 +6,7 @@ import socket
 import logging
 import sys
 import glob
-
+import datetime
 HOST = 'localhost'
 PORT = 6667
 NICK = 'botler'
@@ -19,7 +19,7 @@ log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler(sys.stderr))
 log.setLevel(logging.DEBUG)
 
-chatlog = open("chat.log", "r+")
+chatlog = open("chatlog", "r+")
 def command(name, **options):
     '''Decorator for command functions.
 
@@ -62,6 +62,11 @@ def reload_commands():
     for source in glob.glob('commands/*.py'):
         exec(compile(open(source).read(), source, 'exec'), command_globals)
 
+def logwrite(data):
+    chatlog.write(datetime.datetime.now().strftime("[%c] {0}").format(data))
+    chatlog.write(data)
+    chatlog.flush()
+
 s = socket.socket()
 log.info('Connecting to {}:{} as {}'.format(HOST, PORT, NICK))
 
@@ -81,7 +86,7 @@ while 1:
     if data.find('PING') != -1:
         send('PONG {}'.format(data.split()[1])) 
     if data.find('PING') != 1:
-	chatlog.write(data)
+        logwrite(data)
     if data.find('PRIVMSG') != -1:
         parts = data.split(sep=' ', maxsplit=3)
         if len(parts) == 4:

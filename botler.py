@@ -19,6 +19,7 @@ log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler(sys.stderr))
 log.setLevel(logging.DEBUG)
 
+chatlog = open("chat.log", "r+")
 def command(name, **options):
     '''Decorator for command functions.
 
@@ -79,6 +80,8 @@ while 1:
     # TODO: parse message properly
     if data.find('PING') != -1:
         send('PONG {}'.format(data.split()[1])) 
+    if data.find('PING') != 1:
+	chatlog.write(data)
     if data.find('PRIVMSG') != -1:
         parts = data.split(sep=' ', maxsplit=3)
         if len(parts) == 4:

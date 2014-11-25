@@ -7,6 +7,8 @@ import logging
 import sys
 import glob
 import datetime
+import traceback
+
 HOST = 'localhost'
 PORT = 6667
 NICK = 'botler'
@@ -60,7 +62,10 @@ def reload_commands():
         say=say,
     )
     for source in glob.glob('commands/*.py'):
-        exec(compile(open(source).read(), source, 'exec'), command_globals)
+        try:
+            exec(compile(open(source).read(), source, 'exec'), command_globals)
+        except Exception as e:
+            log.error(traceback.format_exc())
 
 def logwrite(data):
     chatlog.write(datetime.datetime.now().strftime("[%c] {0}").format(data))

@@ -89,7 +89,7 @@ while 1:
     data = recv()
     # TODO: parse message properly
     if data.find('PING') != -1:
-        send('PONG {}'.format(data.split()[1])) 
+        send('PONG {}'.format(data.split()[1]))
     if data.find('PING') != 1:
         logwrite(data)
     if data.find('PRIVMSG') != -1:

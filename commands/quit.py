@@ -1,5 +1,6 @@
-@command("quit", admin_only=True)
-def echo(nick, channel, message):
-    say('{} has commanded me to quit. Adios Asshats!'.format(nick))   
-    time.sleep(7) 
+import sys
+
+@command("quit", admin_only=True, op_only=False)
+def quit(nick, channel, message):
+    say(channel,'{} has commanded me to quit. Adios Asshats!'.format(nick))   
     sys.exit(0)

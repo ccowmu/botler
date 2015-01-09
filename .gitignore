@@ -1,3 +1,10 @@
+#Virtualenv
+/bin
+/include
+/local
+/lib
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

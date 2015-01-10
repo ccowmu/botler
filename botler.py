@@ -8,6 +8,7 @@ import sys
 import glob
 import datetime
 import traceback
+import psycopg2 #Postgresql
 
 HOST = 'localhost'
 PORT = 6667
@@ -72,6 +73,34 @@ def logwrite(data):
     chatlog.write(datetime.datetime.now().strftime("[%c] {0}").format(data))
     chatlog.write(data)
     chatlog.flush()
+
+def db_logwrite(data):
+	now = str(datetime.datetime.now()).split('.')[0]
+	logFileName = "log-%s.txt" % now.split(' ')[0]
+	os.system("touch " + logFileName)
+	logFile = open(logFileName, "w")
+	logFile.write("Starting log at " + now + "\n")
+	try:
+		logFile.write("Establishing connection to database" + '\n')
+		conn = psycopg2.connect(dbname='botler', user='flay')
+		cur = conn.cursor()
+		print("Connection established on " + now)
+		query = """INSERT INTO test (nick, message)
+			VALUES('%s', '%s');""" % ("hello", "test2")
+		cur.execute(query)
+	except psycopg2.Error as e:
+		print(e)
+
+	finally:
+		conn.commit()
+		conn.close()
+		cur.close()
+		logFile.write("Database connection has closed. \n\n")
+		logFile.close()
+
+print("Connection closed")
+#pass in queries from log function in main body
+
 
 s = socket.socket()
 log.info('Connecting to {}:{} as {}'.format(HOST, PORT, NICK))

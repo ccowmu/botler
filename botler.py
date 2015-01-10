@@ -9,6 +9,7 @@ import glob
 import datetime
 import traceback
 import psycopg2 #Postgresql
+import os #For touch'ing logfile. maybe unneeded.
 
 HOST = 'localhost'
 PORT = 6667
@@ -87,6 +88,7 @@ def db_logwrite(data):
 		print("Connection established on " + now)
 		query = """INSERT INTO test (nick, message)
 			VALUES('%s', '%s');""" % ("hello", "test2")
+		#Split datastream into different rows of the table
 		cur.execute(query)
 	except psycopg2.Error as e:
 		print(e)

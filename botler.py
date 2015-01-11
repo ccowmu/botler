@@ -9,7 +9,8 @@ import glob
 import datetime
 import traceback
 import psycopg2 #Postgresql
-import os #For touch'ing logfile. maybe unneeded.
+import os
+import re
 
 HOST = 'localhost'
 PORT = 6667
@@ -18,12 +19,13 @@ IDENT = 'botler'
 REALNAME = 'botler'
 LEADER = '!'
 START_CHANNELS = ['#hackathon']
+DB_DB = 'botler'
+DB_USER = 'botler'
+DB_HOST = 'localhost'
+DB_PASS = os.environ.get('DB_PASS', input('DB_PASS? '))
 
-log = logging.getLogger(__name__)
-log.addHandler(logging.StreamHandler(sys.stderr))
-log.setLevel(logging.DEBUG)
-
-chatlog = open("chat.log", "a")
+# from http://news.anarchy46.net/2012/01/irc-message-regex.html
+IRC_RE = re.compile(r'^(:(?P<prefix>\S+) )?(?P<command>\S+)( (?!:)(?P<params>.+?))?( :(?P<trail>.+))?\r$')
 
 def command(name, **options):
     '''Decorator for command functions.
@@ -70,39 +72,37 @@ def reload_commands():
         except Exception as e:
             log.error(traceback.format_exc())
 
-def logwrite(data):
-    chatlog.write(datetime.datetime.now().strftime("[%c] {0}").format(data))
-    chatlog.write(data)
-    chatlog.flush()
+# Parse a raw IRC message and return a tuple containing:
+# (prefix, command, params, trail)
+# with all elements being either a string if present or None if absent
+def parse(data):
+    """ Parse a raw IRC message and return a tuple of its parts.
 
-def db_logwrite(data):
-	now = str(datetime.datetime.now()).split('.')[0]
-	logFileName = "log-%s.txt" % now.split(' ')[0]
-	os.system("touch " + logFileName)
-	logFile = open(logFileName, "w")
-	logFile.write("Starting log at " + now + "\n")
-	try:
-		logFile.write("Establishing connection to database" + '\n')
-		conn = psycopg2.connect(dbname='botler', user='flay')
-		cur = conn.cursor()
-		print("Connection established on " + now)
-		query = """INSERT INTO test (nick, message)
-			VALUES('%s', '%s');""" % ("hello", "test2")
-		#Split datastream into different rows of the table
-		cur.execute(query)
-	except psycopg2.Error as e:
-		print(e)
+    The returned tuple is of the form:
+    (prefix, command, params, trail)
+    where all elements will be either a string or None
+    """
+    match = IRC_RE.match(data)
+    if match:
+        return (match.group('prefix'), match.group('command'),
+                match.group('params'), match.group('trail'))
+    else:
+        return (None, None, None, None)
 
-	finally:
-		conn.commit()
-		conn.close()
-		cur.close()
-		logFile.write("Database connection has closed. \n\n")
-		logFile.close()
+def db_logwrite(nick, ircuser, command, message, channel):
+    query = """INSERT INTO log (time, nick, ircuser, command, message, channel)
+               VALUES (%s, %s, %s, %s, %s, %s);"""
+    now = str(datetime.datetime.now()).split('.')[0]
+    with db as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(query, (now, nick, ircuser, command[:4], message, channel))
 
-print("Connection closed")
-#pass in queries from log function in main body
+log = logging.getLogger(__name__)
+log.addHandler(logging.StreamHandler(sys.stderr))
+log.setLevel(logging.DEBUG)
 
+db = psycopg2.connect(dbname=DB_DB, user=DB_USER, host=DB_HOST, password=DB_PASS)
+log.info('Established connection to database {} as user {}@{}'.format(DB_DB, DB_USER, DB_HOST))
 
 s = socket.socket()
 log.info('Connecting to {}:{} as {}'.format(HOST, PORT, NICK))
@@ -119,54 +119,46 @@ reload_commands()
 
 while 1:
     data = recv()
-    # TODO: parse message properly
-    if data.find('PING') != -1:
+    prefix, command, params, trail = parse(data)
+    if command == 'PING':
         send('PONG {}'.format(data.split()[1])) 
-    if data.find('PING') != 1:
-        logwrite(data)
-    if data.find('PRIVMSG') != -1:
-        parts = data.split(sep=' ', maxsplit=3)
-        if len(parts) == 4:
-            # Raw parts of the original message
-            # source PRIVMSG target :message
-            real_source = parts[0]
-            real_target = parts[2]
-            real_message = parts[3]
+    if command == 'PRIVMSG':
+        # prefix looks like
+        # nick!user@host
+        bang_splits = prefix.split('!')
+        at_splits = bang_splits[1].split('@')
 
-            # Extract source user nick
-            # :nick!user@host
-            nick = real_source.split('!')[0][1:]
+        nick = bang_splits[0]
+        ircuser = at_splits[0]
+        # only param should be target of PRIVMSG
+        target = params
+        # the rest is the body of the message
+        message = trail
 
-            # If a user PRIVMSG's us we appear as the target
-            if real_target == NICK:
-                channel = nick
-            else:
-                channel = real_target
-
-            # Final parameter (message) is often prefixed with ':'
-            if real_message.startswith(':'):
-                message = real_message[1:]
-            else:
-                message = real_message
-
-            # Check if we need to care about this message
-            if message.startswith(LEADER):
-                parts = message.split(maxsplit=1)
-                command_ = parts[0][len(LEADER):]
-                # Give a default value for message if none is provided.
-                if len(parts) == 2:
-                    message = parts[1]
-                else:
-                    message = ""
-                # Invoke associated command or error
-                if command_ in commands:
-                    commands[command_]['method'](nick, channel, message)
-                elif command_ == 'reload':
-                    reload_commands()
-                else:
-                    say(channel, 'unknown command "{}"'.format(command_))
-
+        # If a user PRIVMSG's us we appear as the target remember to respond
+        # directly to them, not to ourselves
+        if target == NICK:
+            channel = nick
         else:
-            log.warn('Invalid PRIVMSG detected with {} != 4 parts'.format(len(parts)))
+            channel = target
+
+        # Log all messages
+        db_logwrite(nick, ircuser, command, message, target)
+        # Check if we need to care about this message
+        if message.startswith(LEADER):
+            parts = message.split(maxsplit=1)
+            command_ = parts[0][len(LEADER):]
+            # Give a default value for message if none is provided.
+            if len(parts) == 2:
+                message = parts[1]
+            else:
+                message = ""
+            # Invoke associated command or error
+            if command_ in commands:
+                commands[command_]['method'](nick, channel, message)
+            elif command_ == 'reload':
+                reload_commands()
+            else:
+                say(channel, 'unknown command "{}"'.format(command_))
 
 # vim: ts=4:sw=4:et

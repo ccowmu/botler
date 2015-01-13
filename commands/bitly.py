@@ -1,10 +1,10 @@
 @command("bitly")
 def bitly(nick, channel, message):
+    import commands.api
     import json
     import urllib.request
     try:
-        ACCESS_TOKEN = "5936e225282f49fa0e3e20b386141c6ce141e0dc"
-        bitlyurl = "https://api-ssl.bitly.com/v3/shorten?access_token=" + ACCESS_TOKEN + "&longUrl=" + message
+        bitlyurl = "https://api-ssl.bitly.com/v3/shorten?access_token=" + bitlykey + "&longUrl=" + message
         jsonread = urllib.request.urlopen(bitlyurl)
         jsondata = jsonread.read()
         api = json.loads(jsondata.decode('utf8'))

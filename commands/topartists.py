@@ -1,10 +1,10 @@
 @command("topartists")
 def topartists(nick, channel, message):
+    import commands.api
     import json
     import urllib.request
     try:
-        apikey = "ac54cee27cfcc900bf83d7b2ce82b2ca"
-        apiurl = "http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=" + message.split()[0] + "&period=overall&api_key=ac54cee27cfcc900bf83d7b2ce82b2ca&format=json"
+        apiurl = "http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=" + message.split()[0] + "&period=overall&api_key=" + lastfmkey + "&format=json"
         jsonread = urllib.request.urlopen(apiurl)
         jsondata = jsonread.read()
         api = json.loads(jsondata.decode('utf8'))

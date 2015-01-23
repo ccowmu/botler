@@ -17,5 +17,7 @@ def topartists(nick, channel, message):
         say(channel, data)
     except KeyError:
         say(channel, '{}: Invalid username given.'.format(nick))
+    except IndexError:
+        say(channel, '{}: Invalid username given.'.format(nick))
     else:
         pass

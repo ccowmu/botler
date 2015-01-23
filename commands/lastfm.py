@@ -22,6 +22,8 @@ def lastfm(nick, channel, message):
             say(channel, data)
         except KeyError:
             say(channel, '{}: Invalid username given.'.format(nick))
+        except IndexError:
+            say(channel, '{}: Invalid username given.'.format(nick))
         else:
             pass
     else:
@@ -33,6 +35,8 @@ def lastfm(nick, channel, message):
             data = "Recent track for " + message.split()[0] + " (Played on " + date + ")" ": " + song + " by " + artist + " on " + album + "."
             say(channel, data)
         except KeyError:
+            say(channel, '{}: Invalid username given.'.format(nick))
+        except IndexError:
             say(channel, '{}: Invalid username given.'.format(nick))
         else:
             pass

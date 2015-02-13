@@ -103,7 +103,7 @@ log.info('Connecting to {}:{} as {}'.format(HOST, PORT, NICK))
 s.connect((HOST, PORT))
 send('NICK {}'.format(NICK))
 send('USER {} {} bla :{}'.format(IDENT, HOST, REALNAME))
-getopstatus()
+#getopstatus()
 for channel in START_CHANNELS:
     send('JOIN {}'.format(channel))
     send("PRIVMSG {} :{} is now online and running...".format(channel,NICK))

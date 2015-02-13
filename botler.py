@@ -21,7 +21,8 @@ log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler(sys.stderr))
 log.setLevel(logging.DEBUG)
 
-chatlog = open("chatlog", "r+")
+chatlog = open("chat.log", "a")
+
 def command(name, **options):
     '''Decorator for command functions.
 

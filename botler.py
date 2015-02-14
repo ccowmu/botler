@@ -68,6 +68,7 @@ def reload_commands():
     command_globals = dict(
         command=command,
         say=say,
+        db=db,
     )
     for source in glob.glob('commands/*.py'):
         try:
@@ -93,20 +94,19 @@ def parse(data):
         return (None, None, None, None)
 
 def db_logwrite(nick, ircuser, command, message, channel):
-    try:
-        query = """INSERT INTO log (time, nick, ircuser, command, message, channel)
-                   VALUES (%s, %s, %s, %s, %s, %s);"""
-        now = str(datetime.datetime.now()).split('.')[0]
-        with db as conn:
-            with conn.cursor() as cursor:
-                cursor.execute(query, (now, nick, ircuser, command[:4], message, channel))
-    except NameError:
-        pass
+    if db == None: return
+    query = """INSERT INTO log (time, nick, ircuser, command, message, channel)
+               VALUES (%s, %s, %s, %s, %s, %s);"""
+    now = str(datetime.datetime.now()).split('.')[0]
+    with db as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(query, (now, nick, ircuser, command[:4], message, channel))
 
 log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler(sys.stderr))
 log.setLevel(logging.DEBUG)
 
+db = None
 try:
     db = psycopg2.connect(dbname=DB_DB, user=DB_USER, host=DB_HOST, password=DB_PASS)
     log.info('Established connection to database {} as user {}@{}'.format(DB_DB, DB_USER, DB_HOST))
@@ -164,7 +164,11 @@ while 1:
                 message = ""
             # Invoke associated command or error
             if command_ in commands:
-                commands[command_]['method'](nick, ircuser, channel, message)
+                try:
+                    commands[command_]['method'](nick, ircuser, channel, message)
+                except Exception as e:
+                    log.error("command {} failed: {}".format(command_, e))
+                    say(channel, "{}: command failed".format(command_))
             elif command_ == 'reload':
                 reload_commands()
             elif command_ == 'man':

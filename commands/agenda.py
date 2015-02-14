@@ -18,7 +18,7 @@ def ReadAgendaData(filename):
     return data
 
 @command("agenda")
-def agenda(nick, channel, message):
+def agenda(nick, user, channel, message):
     if nick.lower() not in white_list:
         say(channel, "%s: Sorry, you're not authorized to use this feature."%nick)
         return

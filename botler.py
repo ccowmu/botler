@@ -164,7 +164,7 @@ while 1:
                 message = ""
             # Invoke associated command or error
             if command_ in commands:
-                commands[command_]['method'](nick, channel, message)
+                commands[command_]['method'](nick, ircuser, channel, message)
             elif command_ == 'reload':
                 reload_commands()
             else:

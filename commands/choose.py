@@ -1,7 +1,7 @@
 import random
 
 @command("choose")
-def choose(nick, channel, message):
+def choose(nick, user, channel, message):
     choices = message.split(sep = ",")
     #this line rids of empty choices caused by consecutive commas
     choices = [i for i in choices if i != '']

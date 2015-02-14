@@ -8,7 +8,10 @@ import sys
 import glob
 import datetime
 import traceback
-import psycopg2 #Postgresql
+try:
+    import psycopg2 #Postgresql
+except ImportError:
+    pass
 import os
 import re
 
@@ -22,7 +25,7 @@ START_CHANNELS = ['#hackathon']
 DB_DB = 'botler'
 DB_USER = 'botler'
 DB_HOST = 'localhost'
-DB_PASS = os.environ.get('DB_PASS', input('DB_PASS? '))
+DB_PASS = os.environ.get('DB_PASS')
 
 # from http://news.anarchy46.net/2012/01/irc-message-regex.html
 IRC_RE = re.compile(r'^(:(?P<prefix>\S+) )?(?P<command>\S+)( (?!:)(?P<params>.+?))?( :(?P<trail>.+))?\r$')
@@ -90,19 +93,25 @@ def parse(data):
         return (None, None, None, None)
 
 def db_logwrite(nick, ircuser, command, message, channel):
-    query = """INSERT INTO log (time, nick, ircuser, command, message, channel)
-               VALUES (%s, %s, %s, %s, %s, %s);"""
-    now = str(datetime.datetime.now()).split('.')[0]
-    with db as conn:
-        with conn.cursor() as cursor:
-            cursor.execute(query, (now, nick, ircuser, command[:4], message, channel))
+    try:
+        query = """INSERT INTO log (time, nick, ircuser, command, message, channel)
+                   VALUES (%s, %s, %s, %s, %s, %s);"""
+        now = str(datetime.datetime.now()).split('.')[0]
+        with db as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(query, (now, nick, ircuser, command[:4], message, channel))
+    except NameError:
+        pass
 
 log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler(sys.stderr))
 log.setLevel(logging.DEBUG)
 
-db = psycopg2.connect(dbname=DB_DB, user=DB_USER, host=DB_HOST, password=DB_PASS)
-log.info('Established connection to database {} as user {}@{}'.format(DB_DB, DB_USER, DB_HOST))
+try:
+    db = psycopg2.connect(dbname=DB_DB, user=DB_USER, host=DB_HOST, password=DB_PASS)
+    log.info('Established connection to database {} as user {}@{}'.format(DB_DB, DB_USER, DB_HOST))
+except NameError:
+    pass
 
 s = socket.socket()
 log.info('Connecting to {}:{} as {}'.format(HOST, PORT, NICK))

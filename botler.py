@@ -94,15 +94,13 @@ def parse(data):
         return (None, None, None, None)
 
 def db_logwrite(nick, ircuser, command, message, channel):
-    try:
-        query = """INSERT INTO log (time, nick, ircuser, command, message, channel)
-                   VALUES (%s, %s, %s, %s, %s, %s);"""
-        now = str(datetime.datetime.now()).split('.')[0]
-        with db as conn:
-            with conn.cursor() as cursor:
-                cursor.execute(query, (now, nick, ircuser, command[:4], message, channel))
-    except NameError:
-        pass
+    if db == None: return
+    query = """INSERT INTO log (time, nick, ircuser, command, message, channel)
+               VALUES (%s, %s, %s, %s, %s, %s);"""
+    now = str(datetime.datetime.now()).split('.')[0]
+    with db as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(query, (now, nick, ircuser, command[:4], message, channel))
 
 log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler(sys.stderr))

@@ -68,6 +68,7 @@ def reload_commands():
     command_globals = dict(
         command=command,
         say=say,
+        db=db,
     )
     for source in glob.glob('commands/*.py'):
         try:
@@ -107,6 +108,7 @@ log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler(sys.stderr))
 log.setLevel(logging.DEBUG)
 
+db = None
 try:
     db = psycopg2.connect(dbname=DB_DB, user=DB_USER, host=DB_HOST, password=DB_PASS)
     log.info('Established connection to database {} as user {}@{}'.format(DB_DB, DB_USER, DB_HOST))

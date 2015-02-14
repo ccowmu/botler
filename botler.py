@@ -93,14 +93,14 @@ def parse(data):
     else:
         return (None, None, None, None)
 
-def db_logwrite(nick, ircuser, command, message, channel):
+def db_logwrite(nick, ircuser, command_, message, channel):
     if db == None: return
     query = """INSERT INTO log (time, nick, ircuser, command, message, channel)
                VALUES (%s, %s, %s, %s, %s, %s);"""
     now = str(datetime.datetime.now()).split('.')[0]
     with db as conn:
         with conn.cursor() as cursor:
-            cursor.execute(query, (now, nick, ircuser, command[:4], message, channel))
+            cursor.execute(query, (now, nick, ircuser, command_[:4], message, channel))
 
 log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler(sys.stderr))
@@ -128,10 +128,10 @@ reload_commands()
 
 while 1:
     data = recv()
-    prefix, command, params, trail = parse(data)
-    if command == 'PING':
+    prefix, command_, params, trail = parse(data)
+    if command_ == 'PING':
         send('PONG {}'.format(data.split()[1])) 
-    if command == 'PRIVMSG':
+    if command_ == 'PRIVMSG':
         # prefix looks like
         # nick!user@host
         bang_splits = prefix.split('!')
@@ -152,7 +152,7 @@ while 1:
             channel = target
 
         # Log all messages
-        db_logwrite(nick, ircuser, command, message, target)
+        db_logwrite(nick, ircuser, command_, message, target)
         # Check if we need to care about this message
         if message.startswith(LEADER):
             parts = message.split(maxsplit=1)
@@ -189,7 +189,5 @@ while 1:
                     say(channel, '{}: unknown command "{}"'.format(nick, man_parts[0]))
             else:
                 say(channel, 'unknown command "{}"'.format(command_))
-        else:
-            log.warn('Invalid PRIVMSG detected with {} != 4 parts'.format(len(parts)))
 
 # vim: ts=4:sw=4:et

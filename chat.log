@@ -1,0 +1,51 @@
+:yakko.cs.wmich.edu NOTICE AUTH :*** Looking up your hostname...
+:yakko.cs.wmich.edu NOTICE AUTH :*** Checking Ident
+:yakko.cs.wmich.edu NOTICE AUTH :*** No Ident response
+:yakko.cs.wmich.edu NOTICE AUTH :*** Found your hostname
+:yakko.cs.wmich.edu NOTICE botler :*** Your connection class is full, but you have exceed_limit = yes;
+:yakko.cs.wmich.edu NOTICE botler :*** You are exempt from K/D/G lines. Congrats.
+:yakko.cs.wmich.edu NOTICE botler :*** You are exempt from resvs. Congrats.
+:yakko.cs.wmich.edu NOTICE botler :*** You are exempt from user limits. Congrats.
+:yakko.cs.wmich.edu NOTICE botler :*** You are exempt from flood protection, aren't you fearsome.
+:yakko.cs.wmich.edu 001 botler :Welcome to the debian Internet Relay Chat Network botler
+:yakko.cs.wmich.edu 002 botler :Your host is yakko.cs.wmich.edu[0.0.0.0/6667], running version hybrid-1:8.1.13.dfsg.1-1
+:yakko.cs.wmich.edu 003 botler :This server was created Jan  9 2014 at 05:35:43
+:yakko.cs.wmich.edu 004 botler yakko.cs.wmich.edu hybrid-1:8.1.13.dfsg.1-1 DFGHRSWabcdefgijklnorsuwxyz bciklmnoprstveIMORS bkloveIh
+:yakko.cs.wmich.edu 005 botler CALLERID CASEMAPPING=rfc1459 DEAF=D KICKLEN=180 MODES=4 PREFIX=(ohv)@%+ STATUSMSG=@%+ EXCEPTS=e INVEX=I NICKLEN=15 NETWORK=debian MAXLIST=beI:100 MAXTARGETS=4 :are supported by this server
+:yakko.cs.wmich.edu 005 botler CHANTYPES=# CHANLIMIT=#:100 CHANNELLEN=50 TOPICLEN=300 CHANMODES=beI,k,l,imnprstORS ELIST=CMNTU SAFELIST KNOCK WATCH=60 AWAYLEN=180 :are supported by this server
+:yakko.cs.wmich.edu 042 botler 0HYAAACLZ :your unique ID
+:yakko.cs.wmich.edu 251 botler :There are 0 users and 160 invisible on 2 servers
+:yakko.cs.wmich.edu 252 botler 13 :IRC Operators online
+:yakko.cs.wmich.edu 254 botler 95 :channels formed
+:yakko.cs.wmich.edu 255 botler :I have 152 clients and 1 servers
+:yakko.cs.wmich.edu 265 botler :Current local users: 152  Max: 154
+:yakko.cs.wmich.edu 266 botler :Current global users: 160  Max: 162
+:yakko.cs.wmich.edu 250 botler :Highest connection count: 155 (154 clients) (3014 connections received)
+:yakko.cs.wmich.edu 375 botler :- yakko.cs.wmich.edu Message of the Day - 
+:yakko.cs.wmich.edu 372 botler :-  /$$     /$$ /$$$$$$  /$$   /$$ /$$   /$$  /$$$$$$ 
+:yakko.cs.wmich.edu 372 botler :- |  $$   /$$//$$__  $$| $$  /$$/| $$  /$$/ /$$__  $$
+:yakko.cs.wmich.edu 372 botler :-  \  $$ /$$/| $$  \ $$| $$ /$$/ | $$ /$$/ | $$  \ $$
+:yakko.cs.wmich.edu 372 botler :-   \  $$$$/ | $$$$$$$$| $$$$$/  | $$$$$/  | $$  | $$
+:yakko.cs.wmich.edu 372 botler :-    \  $$/  | $$__  $$| $$  $$  | $$  $$  | $$  | $$
+:yakko.cs.wmich.edu 372 botler :-     | $$   | $$  | $$| $$\  $$ | $$\  $$ | $$  | $$
+:yakko.cs.wmich.edu 372 botler :-     | $$   | $$  | $$| $$ \  $$| $$ \  $$|  $$$$$$/
+:yakko.cs.wmich.edu 372 botler :-     |__/   |__/  |__/|__/  \__/|__/  \__/ \______/ 
+:yakko.cs.wmich.edu 372 botler :- Welcome to the yakko ircd-hybrid server!
+:yakko.cs.wmich.edu 372 botler :- 
+:yakko.cs.wmich.edu 372 botler :- New to IRC? Check the man page:
+:yakko.cs.wmich.edu 372 botler :- https://docs.google.com/document/d/1h3adRbyve4ymWh8Yf7MtdAl3KQZgiChxHoOQKZlYJhM/
+:yakko.cs.wmich.edu 372 botler :- it 
+:yakko.cs.wmich.edu 376 botler :End of /MOTD command.
+:botler!botler@localhost MODE botler :+i
+:botler!botler@localhost JOIN :#hackathon
+:yakko.cs.wmich.edu 332 botler #hackathon :| current project: https://github.com/ccowmu/botler | make sure your commands contain admin_only and op_only booleans
+:yakko.cs.wmich.edu 333 botler #hackathon Blind!Blind@localhost 1416605493
+:yakko.cs.wmich.edu 353 botler = #hackathon :botler TheMind @Blind milky drc dumbbot giggles twitch @cpg mobyte fish @Hardison @flay @stringy kell Glass BK
+:yakko.cs.wmich.edu 366 botler #hackathon :End of /NAMES list.
+:NickServ!NickServ@dot.cs.wmich.edu NOTICE botler :This nickname is owned by someone else
+:NickServ!NickServ@dot.cs.wmich.edu NOTICE botler :If this is your nickname, type /msg NickServ IDENTIFY <password>
+:Global!Global@dot.cs.wmich.edu NOTICE botler :If you're seeing this, Hybserv for Debian is working and installed.
+:flay!flay@localhost PRIVMSG #hackathon :OooOOooOOo
+:flay!flay@localhost PRIVMSG #hackathon :wat
+:flay!flay@localhost PRIVMSG #hackathon :PING
+:stringy!stringy@localhost PRIVMSG #hackathon :PONG

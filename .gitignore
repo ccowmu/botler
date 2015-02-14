@@ -1,3 +1,12 @@
+#Virtualenv
+/bin
+/include
+/local
+/lib
+
+#Misc. shit that annoys flay
+*.swp
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -7,6 +16,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+venv/
 env/
 build/
 develop-eggs/
@@ -53,5 +63,4 @@ docs/_build/
 # PyBuilder
 target/
 
-# chat log
 chatlog

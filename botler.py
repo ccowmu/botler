@@ -16,6 +16,7 @@ IDENT = 'botler'
 REALNAME = 'botler'
 LEADER = '!'
 START_CHANNELS = ['#hackathon']
+TOPIC = []
 
 log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler(sys.stderr))
@@ -60,6 +61,7 @@ def reload_commands():
     command_globals = dict(
         command=command,
         say=say,
+        send=send,
     )
     for source in glob.glob('commands/*.py'):
         try:

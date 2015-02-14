@@ -1,3 +1,3 @@
 @command("echo")
-def echo(nick, channel, message):
+def echo(nick, user, channel, message):
     say(channel, '{}: {}'.format(nick, message))

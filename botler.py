@@ -167,7 +167,25 @@ while 1:
                 commands[command_]['method'](nick, ircuser, channel, message)
             elif command_ == 'reload':
                 reload_commands()
+            elif command_ == 'man':
+                man_parts = message.split()
+                if man_parts == []:
+                    #lists all commands if there's none specified
+                    list_commands = ""
+                    for i in commands:
+                        list_commands += i + ", "
+                    list_commands = list_commands[:-2]
+                    say(channel, "{}: Available commands - {}".format(nick, list_commands))
+                elif man_parts[0] in commands:
+                    if "man" in commands[man_parts[0]]:
+                        say(channel, "{}: {}".format(nick, commands[man_parts[0]]["man"]))
+                    else:
+                        say(channel, "{}: None available for command".format(nick))
+                else:
+                    say(channel, '{}: unknown command "{}"'.format(nick, man_parts[0]))
             else:
                 say(channel, 'unknown command "{}"'.format(command_))
+        else:
+            log.warn('Invalid PRIVMSG detected with {} != 4 parts'.format(len(parts)))
 
 # vim: ts=4:sw=4:et

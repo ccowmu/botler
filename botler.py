@@ -164,7 +164,11 @@ while 1:
                 message = ""
             # Invoke associated command or error
             if command_ in commands:
-                commands[command_]['method'](nick, ircuser, channel, message)
+                try:
+                    commands[command_]['method'](nick, ircuser, channel, message)
+                except Exception as e:
+                    log.error("command {} failed: {}".format(command_, e))
+                    say(channel, "{}: command failed".format(command_))
             elif command_ == 'reload':
                 reload_commands()
             elif command_ == 'man':

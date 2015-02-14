@@ -1,5 +1,5 @@
 @command("topartists")
-def topartists(nick, channel, message):
+def topartists(nick, user, channel, message):
     import commands.api
     import json
     import urllib.request

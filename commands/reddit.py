@@ -1,5 +1,5 @@
 @command("reddit")
-def reddit(nick, channel, message):
+def reddit(nick, user, channel, message):
     try:
         import json
         import urllib.request

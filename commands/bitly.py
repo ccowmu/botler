@@ -1,5 +1,5 @@
 @command("bitly")
-def bitly(nick, channel, message):
+def bitly(nick, user, channel, message):
     import commands.api
     import json
     import urllib.request

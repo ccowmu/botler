@@ -1,5 +1,5 @@
 @command("lastfm")
-def lastfm(nick, channel, message):
+def lastfm(nick, user, channel, message):
     import commands.api
     import json
     import urllib.request

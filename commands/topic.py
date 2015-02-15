@@ -2,7 +2,7 @@
 def topic(nick, channel, message):
     try:
         import os
-        file = open("topic.txt", "r+")
+        file = open("topic.txt", "a+")
         topic = file.read()
         tempfile = file.read()
         topic = topic.split("\n")

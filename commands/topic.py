@@ -12,11 +12,11 @@ def topic(nick, channel, message):
             if(os.stat("topic.txt").st_size == 0):
                 topic = str.join('', (topic))
             else:
-                topic = str.join(' -- ', (topic))
+                topic = str.join(' | ', (topic))
             send('TOPIC {} :{}'.format(channel, topic))
             say(channel, "{}: Topic set.".format(nick))
             file = open("topic.txt", "w")
-            topic = topic.split(" -- ")
+            topic = topic.split(" | ")
             topic = str.join("\n", (topic))
             file.write(topic)
         elif message.split()[0] == "file":
@@ -34,11 +34,11 @@ def topic(nick, channel, message):
             if(os.stat("topic.txt").st_size == 0):
                 topic = str.join('', (topic))
             else:
-                topic = str.join(' -- ', (topic))
+                topic = str.join(' | ', (topic))
             send('TOPIC {} :{}'.format(channel, topic))
             say(channel, "{}: Topic set.".format(nick))
             file = open("topic.txt", "w")
-            topic = topic.split(" -- ")
+            topic = topic.split(" | ")
             topic = str.join("\n", (topic))
             file.write(topic)
         else:

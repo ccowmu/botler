@@ -17,7 +17,6 @@ import re
 import configparser
 
 config = configparser.ConfigParser()
-
 config.read("config.ini")
 
 HOST = config['botler']['HOST']
@@ -65,9 +64,6 @@ def recv():
 def say(channel, message):
     send('PRIVMSG {} :{}'.format(channel, message))
 
-def topic(channel, topic):
-    send('TOPIC {} :{}'.format(channel, topic))
-
 def reload_commands():
     '''Reload all source files in commands directory.'''
     global commands
@@ -76,7 +72,6 @@ def reload_commands():
     command_globals = dict(
         command=command,
         say=say,
-        topic=topic,
         db=db,
     )
     for source in glob.glob('commands/*.py'):

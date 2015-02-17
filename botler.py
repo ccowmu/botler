@@ -14,17 +14,22 @@ except ImportError:
     pass
 import os
 import re
+import configparser
 
-HOST = 'localhost'
-PORT = 6667
-NICK = 'botler'
-IDENT = 'botler'
-REALNAME = 'botler'
-LEADER = '!'
-START_CHANNELS = ['#hackathon']
-DB_DB = 'botler'
-DB_USER = 'botler'
-DB_HOST = 'localhost'
+config = configparser.ConfigParser()
+
+config.read("config.ini")
+
+HOST = config['botler']['HOST']
+PORT = int(config['botler']['PORT'])
+NICK = config['botler']['NICK']
+IDENT = config['botler']['IDENT']
+REALNAME = config['botler']['REALNAME']
+LEADER = config['botler']['LEADER']
+START_CHANNELS = list(config['botler']['START_CHANNELS'].split(','))
+DB_DB = config['botlerdb']['DB_DB']
+DB_USER = config['botlerdb']['DB_USER']
+DB_HOST = config['botlerdb']['DB_HOST']
 DB_PASS = os.environ.get('DB_PASS')
 
 # from http://news.anarchy46.net/2012/01/irc-message-regex.html
@@ -60,6 +65,9 @@ def recv():
 def say(channel, message):
     send('PRIVMSG {} :{}'.format(channel, message))
 
+def topic(channel, topic):
+    send('TOPIC {} :{}'.format(channel, topic))
+
 def reload_commands():
     '''Reload all source files in commands directory.'''
     global commands
@@ -68,6 +76,7 @@ def reload_commands():
     command_globals = dict(
         command=command,
         say=say,
+        topic=topic,
         db=db,
     )
     for source in glob.glob('commands/*.py'):

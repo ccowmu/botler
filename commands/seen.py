@@ -8,5 +8,6 @@ def seen(nick,user,channel,message):
 			msg = str(cursor.fetchone())
 			msg = msg.split(',')
 			print(msg)
-			say(channel, (message.lstrip('!seen '), "was last seen on", msg[1:3], "saying" ,msg[9], "in", msg[10]))
+			say(channel, ("%s was last seen on %s saying %s in %s" % (message.lstrip('!seen '), 'FIX TIME', msg[9], msg[10])))
 
+# 3 (minutes ago) on 4, 1, 2 ,0

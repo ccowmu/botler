@@ -67,3 +67,5 @@ docs/_build/
 target/
 
 chatlog
+
+config.ini

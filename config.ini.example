@@ -1,11 +1,11 @@
 [botler]
 host = localhost
 port = 6667
-nick = botlermoses
-ident = botlermoses
-realname = botlermoses
+nick = botler
+ident = botler
+realname = botler
 leader = !
-start_channels = #moses
+start_channels = #hackathon
 admins = moses,stringy,flay,hardison,mobyte
 whitelist = 
 

@@ -73,6 +73,7 @@ def reload_commands():
         command=command,
         say=say,
         db=db,
+        send=send,
     )
     for source in glob.glob('commands/*.py'):
         try:
@@ -134,7 +135,7 @@ while 1:
     data = recv()
     prefix, command_, params, trail = parse(data)
     if command_ == 'PING':
-        send('PONG {}'.format(data.split()[1])) 
+        send('PONG {}'.format(data.split()[1]))
     if command_ == 'PRIVMSG':
         # prefix looks like
         # nick!user@host

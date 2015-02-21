@@ -4,8 +4,9 @@
 def seen(nick,user,channel,message):
 	with db as conn:	
 		with conn.cursor() as cursor:
-			print(cursor.execute("SELECT * from log where nick = 'stringy' order by time desc limit 1;"))
-	print("Done")
-
-	
+			cursor.execute("SELECT * from log where nick = '%s' order by time desc limit 1;" % message)
+			msg = str(cursor.fetchone())
+			msg = msg.split(',')
+			print(msg)
+			say(channel, (message.lstrip('!seen '), "was last seen on", msg[1:3], "saying" ,msg[9], "in", msg[10]))
 

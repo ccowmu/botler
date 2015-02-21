@@ -41,7 +41,11 @@ def command(name, **options):
 
     @command("echo", option="value", ...)
     def echo(nick, channel, message):
-        say(channel, '{}: {}'.fomat(nick, message))
+        say(channel, '{}: {}'.format(nick, message))
+
+    To add a man message: man="<message>"
+    To restrict to botler admins: adminonly=True
+    To restrict to botler admins and whitelisted users: whitelist:True
 
     '''
     def decorator(f):
@@ -73,12 +77,25 @@ def reload_commands():
         command=command,
         say=say,
         db=db,
+        join=join,
+        leave=leave,
+        send=send,
+        reload_admins=reload_admins,
     )
     for source in glob.glob('commands/*.py'):
         try:
             exec(compile(open(source).read(), source, 'exec'), command_globals)
         except Exception as e:
             log.error(traceback.format_exc())
+
+def reload_admins():
+    '''Reload all admins and whitelisted users.'''
+    global ADMINS
+    global WHITELIST
+    config = configparser.ConfigParser()
+    config.read("config.ini")
+    ADMINS = list(config['botler']['ADMINS'].split(','))
+    WHITELIST = list(config['botler']['WHITELIST'].split(','))
 
 # Parse a raw IRC message and return a tuple containing:
 # (prefix, command, params, trail)
@@ -106,6 +123,13 @@ def db_logwrite(nick, ircuser, command_, message, channel):
         with conn.cursor() as cursor:
             cursor.execute(query, (now, nick, ircuser, command_[:4], message, channel))
 
+def join(channel):
+    send('JOIN {}'.format(channel))
+    send("PRIVMSG {} :{} is now online and running...".format(channel, NICK))
+
+def leave(channel):
+    send('PART {}'.format(channel))
+
 log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler(sys.stderr))
 log.setLevel(logging.DEBUG)
@@ -124,11 +148,11 @@ s.connect((HOST, PORT))
 send('NICK {}'.format(NICK))
 send('USER {} {} bla :{}'.format(IDENT, HOST, REALNAME))
 for channel in START_CHANNELS:
-    send('JOIN {}'.format(channel))
-    send("PRIVMSG {} :botler is now online and running...".format(channel))
+    join(channel)
 log.info('Connected')
 
 reload_commands()
+reload_admins()
 
 while 1:
     data = recv()
@@ -169,7 +193,18 @@ while 1:
             # Invoke associated command or error
             if command_ in commands:
                 try:
-                    commands[command_]['method'](nick, ircuser, channel, message)
+                    if "adminonly" in commands[command_] and commands[command_]["adminonly"] == True:
+                        if ircuser in ADMINS:
+                            commands[command_]['method'](nick, ircuser, channel, message)
+                        else:
+                            say(channel, "{}: You are not authorised to use this command.".format(nick))
+                    elif "whitelist" in commands[command_] and commands[command_]["whitelist"] == True:
+                        if ircuser in ADMINS or ircuser in WHITELIST:
+                            commands[command_]['method'](nick, ircuser, channel, message)
+                        else:
+                            say(channel, "{}: You are not authorised to use this command.".format(nick))
+                    else:
+                        commands[command_]['method'](nick, ircuser, channel, message)
                 except Exception as e:
                     log.error("command {} failed: {}".format(command_, e))
                     say(channel, "{}: command failed".format(command_))

@@ -1,5 +1,5 @@
 @command("topartists")
-def topartists(nick, user, channel, message):
+def topartists(nick, nick, channel, message):
     import commands.api
     import json
     import urllib.request
@@ -16,6 +16,8 @@ def topartists(nick, user, channel, message):
         data = "Top 5 Artists for " + message.split()[0] + ": " + artist1 + ", " + artist2 + ", " + artist3 + ", " + artist4 + ", " + artist5 + "."
         say(channel, data)
     except KeyError:
+        say(channel, '{}: Invalid username given.'.format(nick))
+    except IndexError:
         say(channel, '{}: Invalid username given.'.format(nick))
     else:
         pass

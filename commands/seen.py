@@ -2,6 +2,7 @@
 @command("seen")
 
 def seen(nick,user,channel,message):
+	if db == None: return
 	with db as conn:	
 		with conn.cursor() as cursor:
 			cursor.execute("SELECT time, nick, message, channel from log where nick = %s order by time desc limit 1;", (message,))

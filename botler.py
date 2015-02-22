@@ -30,6 +30,7 @@ DB_DB = config['botlerdb']['DB_DB']
 DB_USER = config['botlerdb']['DB_USER']
 DB_HOST = config['botlerdb']['DB_HOST']
 DB_PASS = os.environ.get('DB_PASS')
+DB_LOGGING = config['botlerdb']['DB_LOGGING'].lower() == 'true'
 
 # from http://news.anarchy46.net/2012/01/irc-message-regex.html
 IRC_RE = re.compile(r'^(:(?P<prefix>\S+) )?(?P<command>\S+)( (?!:)(?P<params>.+?))?( :(?P<trail>.+))?\r$')
@@ -115,7 +116,7 @@ def parse(data):
         return (None, None, None, None)
 
 def db_logwrite(nick, ircuser, command_, message, channel):
-    if db == None: return
+    if db == None or not DB_LOGGING: return
     query = """INSERT INTO log (time, nick, ircuser, command, message, channel)
                VALUES (%s, %s, %s, %s, %s, %s);"""
     now = str(datetime.datetime.now()).split('.')[0]

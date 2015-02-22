@@ -1,0 +1,16 @@
+[botler]
+host = localhost
+port = 6667
+nick = botler
+ident = botler
+realname = botler
+leader = !
+start_channels = #hackathon
+admins = moses,stringy,flay,hardison,mobyte
+whitelist = 
+
+[botlerdb]
+db_db = botler
+db_user = botler
+db_host = localhost
+

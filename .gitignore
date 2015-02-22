@@ -6,7 +6,7 @@
 
 #Misc. shit that annoys flay
 *.swp
-
+*.ini
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -31,6 +31,9 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+
+#notes
+files/notes/ignore
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -64,3 +67,5 @@ docs/_build/
 target/
 
 chatlog
+
+config.ini

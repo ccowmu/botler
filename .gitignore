@@ -6,7 +6,7 @@
 
 #Misc. shit that annoys flay
 *.swp
-
+*.ini
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

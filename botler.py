@@ -9,7 +9,7 @@ import glob
 import datetime
 import traceback
 try:
-    pass #import psycopg2 #Postgresql
+    import psycopg2 #Postgresql
 except ImportError:
     pass
 import os

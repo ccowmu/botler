@@ -141,8 +141,7 @@ def leave(channel):
 def bcast(nick, original, message):
     global channels
     for channel in channels:
-        #say(channel, "{} ANNOUNCES FROM {}: {}".format(nick, original, message))
-        say(channel, "{}".format(message))
+        say(channel, "{} announces from {}: {}".format(nick, original, message))
 
 log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler(sys.stderr))

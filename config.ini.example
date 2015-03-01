@@ -13,4 +13,5 @@ whitelist =
 db_db = botler
 db_user = botler
 db_host = localhost
+db_logging = False
 

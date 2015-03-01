@@ -32,6 +32,8 @@ DB_HOST = config['botlerdb']['DB_HOST']
 DB_PASS = os.environ.get('DB_PASS')
 DB_LOGGING = config['botlerdb']['DB_LOGGING'].lower() == 'true'
 
+channels = []
+
 # from http://news.anarchy46.net/2012/01/irc-message-regex.html
 IRC_RE = re.compile(r'^(:(?P<prefix>\S+) )?(?P<command>\S+)( (?!:)(?P<params>.+?))?( :(?P<trail>.+))?\r$')
 
@@ -82,6 +84,7 @@ def reload_commands():
         leave=leave,
         send=send,
         reload_admins=reload_admins,
+        bcast=bcast,
     )
     for source in glob.glob('commands/*.py'):
         try:
@@ -125,11 +128,21 @@ def db_logwrite(nick, ircuser, command_, message, channel):
             cursor.execute(query, (now, nick, ircuser, command_[:4], message, channel))
 
 def join(channel):
+    global channels
     send('JOIN {}'.format(channel))
     send("PRIVMSG {} :{} is now online and running...".format(channel, NICK))
+    channels.append(channel)
 
 def leave(channel):
+    global channels
     send('PART {}'.format(channel))
+    if channel in channels:
+        channels.remove(channel)
+
+def bcast(nick, original, message):
+    global channels
+    for channel in channels:
+        say(channel, "{} announces from {}: {}".format(nick, original, message))
 
 log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler(sys.stderr))
@@ -160,6 +173,11 @@ while 1:
     prefix, command_, params, trail = parse(data)
     if command_ == 'PING':
         send('PONG {}'.format(data.split()[1]))
+    if command_ == 'KICK':
+        params = params.split(' ')
+        print(params[1])
+        if params[1] == NICK:
+            channels.remove(params[0])
     if command_ == 'PRIVMSG':
         # prefix looks like
         # nick!user@host

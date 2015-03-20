@@ -1,5 +1,5 @@
-@command("topartists")
-def topartists(nick, nick, channel, message):
+@command("topartists", man="Top artists on lastfm")
+def topartists(nick, user, channel, message):
     import commands.api
     import json
     import urllib.request
@@ -21,3 +21,6 @@ def topartists(nick, nick, channel, message):
         say(channel, '{}: Invalid username given.'.format(nick))
     else:
         pass
+
+
+topartists

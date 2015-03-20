@@ -15,6 +15,14 @@ except ImportError:
 import os
 import re
 import configparser
+import shutil
+
+if not os.path.exists("config.ini"):
+    if os.path.exists("config.ini.example"):
+        shutil.copy2("config.ini.example", "config.ini")
+    else:
+        print("config.ini does not exist, please copy the example at https://github.com/ccowmu/botler")
+        sys.exit()
 
 config = configparser.ConfigParser()
 config.read("config.ini")

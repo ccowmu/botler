@@ -130,7 +130,7 @@ def db_logwrite(nick, ircuser, command_, message, channel):
 def join(channel):
     global channels
     send('JOIN {}'.format(channel))
-    send("PRIVMSG {} :{} is now online and running...{}".format(channel, NICK, sys.version))
+    send("PRIVMSG {} :{} is now online and running...".format(channel, NICK))
     channels.append(channel)
 
 def leave(channel):
@@ -150,7 +150,7 @@ log.setLevel(logging.DEBUG)
 
 db = None
 try:
-    #db = psycopg2.connect(dbname=DB_DB, user=DB_USER, host=DB_HOST, password=DB_PASS)
+    db = psycopg2.connect(dbname=DB_DB, user=DB_USER, host=DB_HOST, password=DB_PASS)
     log.info('Established connection to database {} as user {}@{}'.format(DB_DB, DB_USER, DB_HOST))
 except NameError:
     pass

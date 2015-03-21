@@ -130,7 +130,7 @@ def db_logwrite(nick, ircuser, command_, message, channel):
 def join(channel):
     global channels
     send('JOIN {}'.format(channel))
-    send("PRIVMSG {} :{} is now online and running...".format(channel, NICK))
+    send("PRIVMSG {} :{} is now online and running...{}".format(channel, NICK, sys.version))
     channels.append(channel)
 
 def leave(channel):
@@ -150,7 +150,7 @@ log.setLevel(logging.DEBUG)
 
 db = None
 try:
-    db = psycopg2.connect(dbname=DB_DB, user=DB_USER, host=DB_HOST, password=DB_PASS)
+    #db = psycopg2.connect(dbname=DB_DB, user=DB_USER, host=DB_HOST, password=DB_PASS)
     log.info('Established connection to database {} as user {}@{}'.format(DB_DB, DB_USER, DB_HOST))
 except NameError:
     pass
@@ -234,8 +234,17 @@ while 1:
                 if man_parts == []:
                     #lists all commands if there's none specified
                     list_commands = ""
-                    for i in commands:
-                        list_commands += i + ", "
+                    if ircuser in ADMINS:
+                        for i in commands:
+                            list_commands += i + ", "
+                    elif ircuser in WHITELIST:
+                        for i in commands:
+                            if not "adminonly" in commands[i]:
+                                list_commands += i + ", "
+                    else:
+                        for i in commands:
+                            if not "adminonly" in commands[i] and not "whitelist" in commands[i]: 
+                                list_commands += i + ", "
                     list_commands = list_commands[:-2]
                     say(channel, "{}: Available commands - {}".format(nick, list_commands))
                 elif man_parts[0] in commands:

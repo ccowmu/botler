@@ -11,3 +11,4 @@
 * spam detection
 * notes to self
 * reminders
+* birthday notifier

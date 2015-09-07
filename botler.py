@@ -208,6 +208,15 @@ while 1:
 
         # Log all messages
         db_logwrite(nick, ircuser, command_, message, target)
+        try:
+            os.mkdir("linklogs/")
+        except FileExistsError:
+            pass
+        
+        with open('linklogs/linkfile'+ datetime.datetime.now().strftime("-%Y-%m-%d"), mode ='a', encoding='utf-8') as linkfile: 
+            for url in re.findall('https?://\S+', message):
+                linkfile.write(url+'\n')                                                              
+
         # Check if we need to care about this message
         if message.startswith(LEADER):
             parts = message.split(maxsplit=1)

@@ -8,37 +8,30 @@ import sys
 import glob
 import datetime
 import traceback
-try:
-    import psycopg2 #Postgresql
-except ImportError:
-    pass
 import os
 import re
-import configparser
 import shutil
+import json
 
-if not os.path.exists("config.ini"):
-    if os.path.exists("config.ini.example"):
-        shutil.copy2("config.ini.example", "config.ini")
-    else:
-        print("config.ini does not exist, please copy the example at https://github.com/ccowmu/botler")
+# Load PostgreSQL library
+try:
+    import psycopg2
+except ImportError:
+    pass
+
+def load_config(file_name):
+    if not os.path.exists(file_name):
+        print(('{0} does not exist, please copy the example at '
+        'https://github.com/ccowmu/botler').format(file_name))
         sys.exit()
+    else:
+        with open(file_name) as config:
+            return json.load(config)
 
-config = configparser.ConfigParser()
-config.read("config.ini")
-
-HOST = config['botler']['HOST']
-PORT = int(config['botler']['PORT'])
-NICK = config['botler']['NICK']
-IDENT = config['botler']['IDENT']
-REALNAME = config['botler']['REALNAME']
-LEADER = config['botler']['LEADER']
-START_CHANNELS = list(config['botler']['START_CHANNELS'].split(','))
-DB_DB = config['botlerdb']['DB_DB']
-DB_USER = config['botlerdb']['DB_USER']
-DB_HOST = config['botlerdb']['DB_HOST']
-DB_PASS = os.environ.get('DB_PASS')
-DB_LOGGING = config['botlerdb']['DB_LOGGING'].lower() == 'true'
+# Load the config from command line argument, else set to config.json
+config = load_config("config.json" if len(sys.argv) < 2 else sys.argv[1])
+locals().update(config['botler'])
+locals().update(config['botlerdb'])
 
 channels = []
 
@@ -212,10 +205,10 @@ while 1:
             os.mkdir("linklogs/")
         except FileExistsError:
             pass
-        
-        with open('linklogs/linkfile'+ datetime.datetime.now().strftime("-%Y-%m-%d"), mode ='a', encoding='utf-8') as linkfile: 
+
+        with open('linklogs/linkfile'+ datetime.datetime.now().strftime("-%Y-%m-%d"), mode ='a', encoding='utf-8') as linkfile:
             for url in re.findall('https?://\S+', message):
-                linkfile.write(url+'\n')                                                              
+                linkfile.write(url+'\n')
 
         # Check if we need to care about this message
         if message.startswith(LEADER):
@@ -260,7 +253,7 @@ while 1:
                                 list_commands += i + ", "
                     else:
                         for i in commands:
-                            if not "adminonly" in commands[i] and not "whitelist" in commands[i]: 
+                            if not "adminonly" in commands[i] and not "whitelist" in commands[i]:
                                 list_commands += i + ", "
                     list_commands = list_commands[:-2]
                     say(channel, "{}: Available commands - {}".format(nick, list_commands))
@@ -275,3 +268,5 @@ while 1:
                 say(channel, 'unknown command "{}"'.format(command_))
 
 # vim: ts=4:sw=4:et
+
+

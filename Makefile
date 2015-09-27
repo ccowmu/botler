@@ -13,5 +13,8 @@ bin/:
 requirements:
 	bin/pip install -r requirements.txt
 
+clean:
+	rm -rf bin include lib pip-selfcheck.json ./**/*.pyc ./**/__pycache__/
+
 .PHONY: setup virtualenv requirements test
 

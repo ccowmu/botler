@@ -8,13 +8,11 @@ The CCoWMU IRC bot.
 You need to create a virtualenv in order to install packages which botler
 depends on.
 
-On yakko this might look something like:
+You can use the ```Makefile``` to do this:
+    $ make setup
 
-    $ pyvenv-3.4 --without-pip env
-    $ . env/bin/activate
-    $ curl https://raw.githubusercontent.com/pypa/pip/master/contrib/get-pip.py | python
-    $ pip install -r requirements.txt
+The ```Makefile``` specifies the configuration file to use with botler, botler will use ```config.json``` if no file is specified.
 
-Every time you want to work on botler from a new terminal, you will need to run:
+To run botler:
+    $ make run
 
-    $ . env/bin/activate

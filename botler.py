@@ -158,7 +158,7 @@ except NameError:
 s = socket.socket()
 log.info('Connecting to {}:{} as {}'.format(HOST, PORT, NICK))
 
-s.connect((HOST, PORT))
+s.connect((HOST, int(PORT)))
 send('NICK {}'.format(NICK))
 send('USER {} {} bla :{}'.format(IDENT, HOST, REALNAME))
 for channel in START_CHANNELS:

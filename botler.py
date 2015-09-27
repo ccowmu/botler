@@ -97,10 +97,9 @@ def reload_admins():
     '''Reload all admins and whitelisted users.'''
     global ADMINS
     global WHITELIST
-    config = configparser.ConfigParser()
-    config.read("config.ini")
-    ADMINS = list(config['botler']['ADMINS'].split(','))
-    WHITELIST = list(config['botler']['WHITELIST'].split(','))
+    config = load_config("config.json" if len(sys.argv) < 2 else sys.argv[1])
+    ADMINS = config['botler']['ADMINS']
+    WHITELIST = config['botler']['WHITELIST']
 
 # Parse a raw IRC message and return a tuple containing:
 # (prefix, command, params, trail)

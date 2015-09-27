@@ -6,7 +6,9 @@
     "IDENT": "botler",
     "REALNAME": "botler",
     "LEADER": "!",
-    "START_CHANNELS": "hackathon",
+    "START_CHANNELS": [
+      "#hackathon"
+    ],
     "ADMINS": [
       "moses",
       "stringy",

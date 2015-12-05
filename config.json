@@ -1,0 +1,28 @@
+{
+  "botler": {
+    "HOST": "localhost",
+    "PORT": "6667",
+    "NICK": "botler",
+    "IDENT": "botler",
+    "REALNAME": "botler",
+    "LEADER": "!",
+    "START_CHANNELS": [
+      "#hackathon"
+    ],
+    "ADMINS": [
+      "moses",
+      "stringy",
+      "flay",
+      "hardison",
+      "mobyte"
+    ],
+    "WHITELIST": [
+    ]
+  },
+  "botlerdb": {
+    "DB_DB": "botler",
+    "DB_USER": "botler",
+    "DB_HOST": "localhost",
+    "DB_LOGGING": false
+  }
+}

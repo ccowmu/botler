@@ -1,6 +1,6 @@
 {
   "botler": {
-    "HOST": "unallocatedspace.irc.slack.com",
+    "HOST": "localhost",
     "PORT": "6667",
     "NICK": "mrkisses",
     "IDENT": "mrkisses",

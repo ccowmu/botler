@@ -1,4 +1,4 @@
-#!/usr/bin/env python3/connect
+#!/usr/bin/env python3
 
 
 # botler: the CCoWMU IRC bot.
@@ -158,7 +158,7 @@ except NameError:
     pass
 
 s = socket.socket()
-irc = ssl.wrap_socket(socket)
+irc = ssl.wrap_socket(s)
 log.info('Connecting to {}:{} as {}'.format(HOST, PORT, NICK))
 
 s.connect((HOST, int(PORT)))

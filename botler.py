@@ -158,10 +158,11 @@ except NameError:
     pass
 
 s = socket.socket()
-irc = ssl.wrap_socket(s)
+s.connect((HOST, int(PORT)))
+
+s = ssl.wrap_socket(s)
 log.info('Connecting to {}:{} as {}'.format(HOST, PORT, NICK))
 
-s.connect((HOST, int(PORT)))
 #send('PASS {}'.format(PASS))
 send('NICK {}'.format(NICK))
 send('USER {} {} bla :{}'.format(IDENT, HOST, REALNAME))

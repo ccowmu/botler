@@ -12,6 +12,7 @@ import os
 import re
 import shutil
 import json
+import ssl
 
 # Load PostgreSQL library
 try:
@@ -159,6 +160,7 @@ s = socket.socket()
 log.info('Connecting to {}:{} as {}'.format(HOST, PORT, NICK))
 
 s.connect((HOST, int(PORT)))
+#send('PASS {}'.format(PASS))
 send('NICK {}'.format(NICK))
 send('USER {} {} bla :{}'.format(IDENT, HOST, REALNAME))
 for channel in START_CHANNELS:
@@ -182,7 +184,7 @@ while 1:
         # prefix looks like
         # nick!user@host
         bang_splits = prefix.split('!')
-        at_splits = bang_splits[1].split('@')
+        at_splits = bang_splits[0].split('@')
 
         nick = bang_splits[0]
         ircuser = at_splits[0]

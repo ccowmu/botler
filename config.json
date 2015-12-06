@@ -3,7 +3,7 @@
     "HOST": "unallocatedspace.irc.slack.com",
     "PORT": "6667",
     "NICK": "unallobot",
-    "PASS": "unallocatedspace.xjckNxxaSxx0tBFlUmHX",
+    "PASS": "/.secret/slack.token",
     "IDENT": "flay",
     "REALNAME": "flay",
     "LEADER": "!",

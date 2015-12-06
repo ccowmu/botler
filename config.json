@@ -2,13 +2,13 @@
   "botler": {
     "HOST": "unallocatedspace.irc.slack.com",
     "PORT": "6667",
-    "NICK": "mrkisses",
-    "PASS": "unallocatedspace.XSI0wkKSzTm8LzK0z1Ws",
-    "IDENT": "mrkisses",
-    "REALNAME": "mrkisses",
+    "NICK": "unallobot",
+    "PASS": "unallocatedspace.xjckNxxaSxx0tBFlUmHX",
+    "IDENT": "flay",
+    "REALNAME": "flay",
     "LEADER": "!",
     "START_CHANNELS": [
-      "#brokebotmountain"
+      "#random"
     ],
     "ADMINS": [
       "moses",
@@ -21,8 +21,8 @@
     ]
   },
   "botlerdb": {
-    "DB_DB": "mrkisses",
-    "DB_USER": "mrkisses",
+    "DB_DB": "flay",
+    "DB_USER": "flay",
     "DB_HOST": "localhost",
     "DB_LOGGING": false
   }

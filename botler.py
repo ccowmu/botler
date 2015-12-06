@@ -8,6 +8,7 @@ import logging
 import sys
 import glob
 import datetime
+import requests
 import traceback
 import os
 import re
@@ -163,7 +164,8 @@ s.connect((HOST, int(PORT)))
 s = ssl.wrap_socket(s)
 log.info('Connecting to {}:{} as {}'.format(HOST, PORT, NICK))
 
-#send('PASS {}'.format(PASS))
+print('PASS {}'.format(PASS))
+print(send('PASS {}'.format(PASS)))
 send('NICK {}'.format(NICK))
 send('USER {} {} bla :{}'.format(IDENT, HOST, REALNAME))
 for channel in START_CHANNELS:

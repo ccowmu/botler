@@ -14,6 +14,8 @@
 * birthday notifier (facebook api?)
 * Sunlight Foundation!
 * Wolfram Alpha
+* Say
+
 
 Phone stuff:
 * sms
@@ -24,6 +26,7 @@ Office Stuff:
 *door
 *doorstats
 
+* SSL enabled or disabled, able to call via config
 * Hackerspace network : Project Collab
 
 

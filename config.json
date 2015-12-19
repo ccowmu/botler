@@ -2,24 +2,25 @@
   "botler": {
     "HOST": "localhost",
     "PORT": "6667",
-<<<<<<< HEAD
-    "NICK": "unallobot",
-    "PASS": "/.secret/slack.token",
-    "IDENT": "flay",
-    "REALNAME": "flay",
-=======
-    "NICK": "mrkisses",
-    "IDENT": "mrkisses",
-    "REALNAME": "mrkisses",
->>>>>>> 8458baf0bf2d9c378d538a730b5e53b55e31738a
+    "NICK": "botler",
+    "PASS": "",
+    "IDENT": "botler",
+    "REALNAME": "botler",
+    "NICK": "botler",
+    "IDENT": "botler",
+    "REALNAME": "botler",
     "LEADER": "!",
     "START_CHANNELS": [
       "#random"
     ],
+    "SSL_CONNECT": [
+      "on"
+    ],
     "ADMINS": [
       "moses",
-      "stringy",
       "flay",
+      "stringy",
+      "botler",
       "hardison",
       "mobyte"
     ],
@@ -27,8 +28,8 @@
     ]
   },
   "botlerdb": {
-    "DB_DB": "flay",
-    "DB_USER": "flay",
+    "DB_DB": "botler",
+    "DB_USER": "botler",
     "DB_HOST": "localhost",
     "DB_LOGGING": false
   }

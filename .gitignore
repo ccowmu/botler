@@ -75,6 +75,7 @@ config.ini
 *skill*
 linklogs
 config.json
+/commands/working
 
 #Added folder for api tokens, passwords
 /.secret

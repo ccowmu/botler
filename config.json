@@ -1,14 +1,14 @@
 {
   "botler": {
-    "HOST": "unallocatedspace.irc.slack.com",
+    "HOST": "localhost",
     "PORT": "6667",
-    "NICK": "unallobot",
+    "NICK": "botler",
     "PASS": "",
-    "IDENT": "unallobot",
-    "REALNAME": "unallobot",
-    "NICK": "unallobot",
-    "IDENT": "unallobot",
-    "REALNAME": "unallobot",
+    "IDENT": "botler",
+    "REALNAME": "botler",
+    "NICK": "botler",
+    "IDENT": "botler",
+    "REALNAME": "botler",
     "LEADER": "!",
     "START_CHANNELS": [
       "#random"
@@ -20,7 +20,7 @@
       "moses",
       "flay",
       "stringy",
-      "unallobot",
+      "botler",
       "hardison",
       "mobyte"
     ],
@@ -28,8 +28,8 @@
     ]
   },
   "botlerdb": {
-    "DB_DB": "unallobot",
-    "DB_USER": "unallobot",
+    "DB_DB": "botler",
+    "DB_USER": "botler",
     "DB_HOST": "localhost",
     "DB_LOGGING": false
   }

@@ -26,12 +26,9 @@ Office Stuff:
 *door
 *doorstats
 
-* SSL enabled or disabled, able to call via config
 * Hackerspace network : Project Collab
-
 
 Quiet mode (yields pm only)
 channel config (certain functions do not work unless whitelisted)
 
 newuser analytics
-

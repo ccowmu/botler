@@ -6,23 +6,15 @@
     "PASS": "",
     "IDENT": "botler",
     "REALNAME": "botler",
-    "NICK": "botler",
-    "IDENT": "botler",
-    "REALNAME": "botler",
     "LEADER": "!",
     "START_CHANNELS": [
       "#random"
     ],
     "SSL_CONNECT": [
-      "on"
+      "off"
     ],
     "ADMINS": [
-      "moses",
-      "flay",
-      "stringy",
-      "botler",
-      "hardison",
-      "mobyte"
+      "flay"
     ],
     "WHITELIST": [
     ]

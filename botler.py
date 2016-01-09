@@ -160,15 +160,15 @@ except NameError:
 
 s = socket.socket()
 s.connect((HOST, int(PORT)))
-
+s = ssl.wrap_socket(s)
 #SSL Checking
-print("Check status:", SSL_CONNECT)
-if SSL_CONNECT == ['on']:
-    print('working')
-    s = ssl.wrap_socket(s)
-    log.info('Connecting to {}:{} as {}'.format(HOST, PORT, NICK))
-else:
-    pass
+#print("Check status:", SSL_CONNECT)
+#if SSL_CONNECT == ['on']:
+#    print('working')
+#    s = ssl.wrap_socket(s)
+#    log.info('Connecting to {}:{} as {}'.format(HOST, PORT, NICK))
+#else:
+#    pass
 #Reads in tokens from .secret
 PASS = '.secret/slack.token'
 with open(PASS, 'r') as PASS:
